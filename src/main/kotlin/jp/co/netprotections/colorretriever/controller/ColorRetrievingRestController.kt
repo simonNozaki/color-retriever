@@ -14,8 +14,8 @@ import reactor.core.publisher.Flux
 @RestController
 class ColorRetrievingRestController(@Autowired private val colorRepository: ColorRepository) {
 
-    //@RequestMapping(value="/color",produces=[MediaType.APPLICATION_JSON_UTF8_VALUE])
-    //fun getColorList(): Flux<Color> {
-
-    //}
+    @RequestMapping(value="/color",produces=[MediaType.APPLICATION_JSON_UTF8_VALUE])
+    fun getColorList(): Flux<Color> {
+        return colorRepository.getAllColors()
+    }
 }
