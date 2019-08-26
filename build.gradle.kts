@@ -9,7 +9,10 @@ plugins {
 
 group = "jp.co.netprotections"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 val developmentOnly by configurations.creating
 configurations {

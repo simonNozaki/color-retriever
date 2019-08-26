@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jp.co.netprotections.colorretriever.data.Color
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 class ColorWebClient {
 
@@ -16,9 +17,18 @@ class ColorWebClient {
                 .bodyToFlux(Color::class.java)
                 .log()
 
-        colorFlux.subscribe{
-            println(ObjectMapper().writeValueAsString(it))
+        var colorMono: Mono<Color> = webClient.get()
+                .uri("/color/{code}", "")
+                .retrieve()
+                .bodyToMono(Color::class.java)
+                .log()
 
+        colorFlux.subscribe{
+            log(it)
+        }
+
+        colorMono.subscribe{
+            log(it)
         }
     }
 }
