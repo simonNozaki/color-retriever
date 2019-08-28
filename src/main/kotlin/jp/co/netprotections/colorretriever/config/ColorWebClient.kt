@@ -18,7 +18,7 @@ class ColorWebClient {
                 .log()
 
         var colorMono: Mono<Color> = webClient.get()
-                .uri("/color/{code}", "")
+                .uri("/color/{code}", "00a1e9")
                 .retrieve()
                 .bodyToMono(Color::class.java)
                 .log()

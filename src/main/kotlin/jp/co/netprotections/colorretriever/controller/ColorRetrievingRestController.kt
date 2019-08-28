@@ -1,6 +1,7 @@
 package jp.co.netprotections.colorretriever.controller
 
 import jp.co.netprotections.colorretriever.data.Color
+import jp.co.netprotections.colorretriever.extension.invokeValidate
 import jp.co.netprotections.colorretriever.repository.ColorRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -23,6 +24,9 @@ class ColorRetrievingRestController(@Autowired private val colorRepository: Colo
 
     @RequestMapping(value="/color/{code}",produces=[MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun getColorByCode(@PathVariable("code") code: String): Mono<Color> {
-        return colorRepository.getColorByCode(code)
+
+        return invokeValidate(code)
+                .check { code == code }
+                .buildMono { colorRepository.getColorByCode(code) }
     }
 }
