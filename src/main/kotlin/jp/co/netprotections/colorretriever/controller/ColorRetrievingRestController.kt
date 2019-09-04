@@ -26,7 +26,13 @@ class ColorRetrievingRestController(@Autowired private val colorRepository: Colo
     fun getColorByCode(@PathVariable("code") code: String): Mono<Color> {
 
         return invokeValidate(code)
-                .check { code == code }
+                .check { isValidCode(code) }
                 .buildMono { colorRepository.getColorByCode(code) }
+    }
+
+    private fun isValidCode(code: String): Boolean {
+        if(code.length != 6) return false
+
+        return true
     }
 }

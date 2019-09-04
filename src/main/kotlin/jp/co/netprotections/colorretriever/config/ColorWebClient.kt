@@ -1,6 +1,5 @@
 package jp.co.netprotections.colorretriever.config
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jp.co.netprotections.colorretriever.data.Color
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux

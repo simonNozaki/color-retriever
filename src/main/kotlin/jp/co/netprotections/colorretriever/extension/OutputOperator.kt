@@ -1,25 +1,26 @@
 package jp.co.netprotections.colorretriever.extension
 
+import jp.co.netprotections.colorretriever.data.GeneralResponse
 import reactor.core.publisher.Mono
 
 /**
  * バリデータクラスを呼び出す
  */
-fun invokeValidate(subject: String?): Validator{
+fun invokeValidate(subject: String?): Validator {
     return Validator(subject)
 }
 
 /**
  * バリデータクラス
  */
-class Validator(var subject: String?) {
+class Validator(private var subject: String?) {
 
     /**
      * 中間操作を提供する
      * 提示されたデータを検証するクロージャを引数とし、真である場合次の操作に引き渡す。
      */
     fun check(closure: () -> Boolean): Validator {
-        return when(closure.invoke()){
+        return when (closure.invoke()) {
             true -> Validator(subject)
             else -> Validator(null)
         }
