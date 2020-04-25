@@ -1,6 +1,5 @@
 package jp.co.netprotections.colorretriever.extension
 
-import jp.co.netprotections.colorretriever.data.GeneralResponse
 import reactor.core.publisher.Mono
 
 /**

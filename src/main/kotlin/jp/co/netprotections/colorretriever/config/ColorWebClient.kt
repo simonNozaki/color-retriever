@@ -7,16 +7,16 @@ import reactor.core.publisher.Mono
 
 class ColorWebClient {
 
-    val webClient: WebClient = WebClient.create("http://localhost:8080")
+    private val webClient: WebClient = WebClient.create("http://localhost:8080")
 
     fun consume() {
-        var colorFlux: Flux<Color> = webClient.get()
+        val colorFlux: Flux<Color> = webClient.get()
                 .uri("/color")
                 .retrieve()
                 .bodyToFlux(Color::class.java)
                 .log()
 
-        var colorMono: Mono<Color> = webClient.get()
+        val colorMono: Mono<Color> = webClient.get()
                 .uri("/color/{code}", "00a1e9")
                 .retrieve()
                 .bodyToMono(Color::class.java)
