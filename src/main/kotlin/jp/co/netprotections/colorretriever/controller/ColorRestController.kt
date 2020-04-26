@@ -2,12 +2,15 @@ package jp.co.netprotections.colorretriever.controller
 
 import jp.co.netprotections.colorretriever.data.Color
 import jp.co.netprotections.colorretriever.extension.invokeValidate
+import jp.co.netprotections.colorretriever.extension.isValidCode
+import jp.co.netprotections.colorretriever.extension.isValidName
 import jp.co.netprotections.colorretriever.repository.ColorRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import redis.clients.jedis.util.Slowlog
 
 /**
  * 色REST Controller
@@ -31,7 +34,8 @@ class ColorRestController(@Autowired private val colorRepository: ColorRepositor
     @RequestMapping(value= ["/color"],produces=[MediaType.APPLICATION_JSON_UTF8_VALUE],method = [RequestMethod.POST])
     fun insertNewColor(@RequestBody req: Color): Mono<Color> {
         return invokeValidate(req.code)
-                .check { isValidCode(req.code) }
+                .check { req.code.isValidCode() }
+                .check { req.name.isValidName() }
                 .buildMono { colorRepository.setColorByCode(req) }
     }
 
@@ -48,35 +52,8 @@ class ColorRestController(@Autowired private val colorRepository: ColorRepositor
                 .buildMono { colorRepository.getColorByKey(name) }
     }
 
-    /**
-     * 16進数コードで色を検索します。
-     */
-    @RequestMapping(value= ["/color/{code}"],produces=[MediaType.APPLICATION_JSON_UTF8_VALUE])
-    fun getColorByCode(@PathVariable("code") code: String): Mono<Color> {
-
-        return invokeValidate(code)
-                .check { isValidCode(code) }
-                .buildMono { colorRepository.getColorByCode(code) }
-    }
-
-    private fun isValidCode(code: String): Boolean {
-        if(code.length != 6) return false
-
-        return true
-    }
-
-    private fun String.isValidName(): Boolean {
-        val REGEX_HEX = "[a-f0-9]+"
-        // 空文字チェック
-        if(this.isBlank()) return false
-
-        // 桁数チェック
-        if(this.chars().count().toInt() > 40) return false
-
-        // 半角英数字パターン
-        val regex = Regex(pattern = REGEX_HEX)
-        if (!regex.matches(this)) return false// 空文字チェック
-
-        return true
+    @RequestMapping(value= ["/slowlogs"],produces=[MediaType.APPLICATION_JSON_UTF8_VALUE])
+    fun getSlowlogs(): Flux<Slowlog> {
+        return colorRepository.getSlowlogs()
     }
 }

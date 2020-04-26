@@ -18,5 +18,5 @@ class ColorretrieverApplication : SpringBootServletInitializer()
 fun main(args: Array<String>) {
 	runApplication<ColorretrieverApplication>(*args)
 
-	ColorWebClient().consume()
+//	ColorWebClient().consume()
 }
