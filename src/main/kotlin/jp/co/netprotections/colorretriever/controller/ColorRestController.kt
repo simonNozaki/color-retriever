@@ -1,6 +1,7 @@
 package jp.co.netprotections.colorretriever.controller
 
 import jp.co.netprotections.colorretriever.data.Color
+import jp.co.netprotections.colorretriever.extension.ColorValidator
 import jp.co.netprotections.colorretriever.extension.invokeValidate
 import jp.co.netprotections.colorretriever.extension.isValidCode
 import jp.co.netprotections.colorretriever.extension.isValidName
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 import redis.clients.jedis.util.Slowlog
 
 /**
@@ -46,6 +48,13 @@ class ColorRestController(@Autowired private val colorRepository: ColorRepositor
      */
     @RequestMapping(value= ["/color/{name}"],produces=[MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun getColorByName(@PathVariable("name") name: String): Mono<Color> {
+
+        ColorValidator.testName(name)
+                .runCatching {
+                    this.executeRepository { colorRepository.getColorByKey(name) }
+                }.onSuccess { return@onSuccess }
+                .onFailure { return Color("","").toMono() }
+
 
         return invokeValidate(name)
                 .check { name.isValidName() }

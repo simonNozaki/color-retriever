@@ -1,6 +1,6 @@
 package jp.co.netprotections.colorretriever
 
-import jp.co.netprotections.colorretriever.config.ColorWebClient
+import jp.co.netprotections.colorretriever.client.ColorWebClient
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer

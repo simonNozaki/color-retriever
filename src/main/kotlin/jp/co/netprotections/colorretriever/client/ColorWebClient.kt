@@ -1,5 +1,6 @@
-package jp.co.netprotections.colorretriever.config
+package jp.co.netprotections.colorretriever.client
 
+import jp.co.netprotections.colorretriever.config.log
 import jp.co.netprotections.colorretriever.data.Color
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
@@ -17,7 +18,7 @@ class ColorWebClient {
                 .log()
 
         val colorMono: Mono<Color> = webClient.get()
-                .uri("/color/{code}", "00a1e9")
+                .uri("/color/{name}", "topaz")
                 .retrieve()
                 .bodyToMono(Color::class.java)
                 .log()

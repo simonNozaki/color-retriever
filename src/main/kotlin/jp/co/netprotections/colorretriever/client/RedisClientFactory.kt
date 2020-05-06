@@ -1,4 +1,4 @@
-package jp.co.netprotections.colorretriever.config
+package jp.co.netprotections.colorretriever.client
 
 import redis.clients.jedis.Jedis
 import redis.clients.jedis.JedisPool

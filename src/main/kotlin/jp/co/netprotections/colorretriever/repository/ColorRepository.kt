@@ -1,13 +1,12 @@
 package jp.co.netprotections.colorretriever.repository
 
-import jp.co.netprotections.colorretriever.config.RedisClientFactory
+import jp.co.netprotections.colorretriever.client.RedisClientFactory
 import jp.co.netprotections.colorretriever.data.Color
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toFlux
 import reactor.core.publisher.toMono
-import redis.clients.jedis.Jedis
 import redis.clients.jedis.util.Slowlog
 
 @Repository
@@ -19,16 +18,16 @@ class ColorRepository {
 
         // キーで検索してマップを作成、リスト化
         return when(colors.size) {
-            0 ->  { mutableListOf<Color>().toFlux() }
+            0 ->  { mutableListOf() }
             else -> {
                 colors.map { key: String ->
                     val value: String = RedisClientFactory.from().get(key)
                     Color(key, value)
                 }
                 .toList()
-                .toFlux()
             }
         }
+        .toFlux()
     }
 
     fun getColorByKey(name: String): Mono<Color> {

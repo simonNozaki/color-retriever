@@ -7,4 +7,4 @@ COPY init.sh /workspace
 RUN chmod +x /workspace/init.sh
 RUN chmod +x /workspace/seed.redis
 
-# CMD ["redis-cli < /workspace/seed.redis"]
+# RUN redis-cli < /workspace/seed.redis

@@ -26,12 +26,20 @@ repositories {
 }
 
 dependencies {
+	// Spring Boot
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+	// Kotlin
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("redis.clients:jedis:3.2.0")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+	// DB client
+	implementation("redis.clients:jedis:3.2.0")
+	implementation("com.amazonaws:aws-java-sdk-dynamodb:1.11.774")
+
+	// Tools, Test
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
